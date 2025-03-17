@@ -1,25 +1,29 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { debounce } from "../utils/debounce";
 
 const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState("");
 
-  const handleSearch = debounce((text) => {
-    onSearch(text);
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setQuery(value);
+    debouncedSearch(value);
+  };
+
+  const debouncedSearch = debounce((searchTerm) => {
+    onSearch(searchTerm);
   }, 300);
 
-  useEffect(() => {
-    handleSearch(query);
-  }, [query]);
-
   return (
-    <input
-      type="text"
-      placeholder="Search users..."
-      value={query}
-      onChange={(e) => setQuery(e.target.value)}
-      className="p-2 border rounded"
-    />
+    <div className="p-4 text-center">
+      <input
+        type="text"
+        placeholder="Search users..."
+        value={query}
+        onChange={handleInputChange}
+        className="w-full p-2 border rounded"
+      />
+    </div>
   );
 };
 
